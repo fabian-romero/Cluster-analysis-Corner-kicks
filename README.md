@@ -1,5 +1,3 @@
 # Soccer_analysis
 
-Hi guys!!
-
-This project is about football game analysis. My aim is to analysis the collective and individual behaviors during the soccer game and identify some patters that result of those behaviors. 
+This project is about football game analysis. This aim to analyse collective and individual behaviors during the soccer game and identify some patters that result from interactions during the game. 
