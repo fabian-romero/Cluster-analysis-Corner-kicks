@@ -1,0 +1,40 @@
+#reads the dataframes and transforms 0 and 1 values in qualitative or quantitative data
+
+games <- c()
+for (game in 1:100) {
+  data <- read_excel('data.xls', game)
+  names <- colnames(data[3:ncol(data)])
+  
+  new_data <- data %>% 
+    select("variavel")
+  for (corner in names) {
+    temp <- data[, c('variavel', 'data', corner)]
+    colnames(temp)[3] <- 'tempcol'
+    teste <- temp %>% 
+      mutate(new_col = case_when(!grepl('num_players_', variavel) & temp$tempcol == '1'  ~ temp$data, TRUE~as.character(temp$tempcol)))
+    colnames(teste)[4] <- paste0(sprintf('%s', corner))
+    new_data <- cbind(new_data, teste[4])
+  }
+  
+  
+  new_data2 <- new_data %>% 
+    group_by(variavel) %>% 
+    summarize_all(~ max(as.character(.), na.rm = TRUE)) %>%
+    ungroup
+  
+  new_data3 <- as.data.frame.matrix(t(new_data2))
+  
+  new_data3 <- new_data3 %>% 
+    row_to_names(1)
+  
+  game <- game
+  corner <- seq(1:nrow(new_data3))
+  new_data4 <- cbind(game, corner, new_data3)
+  new_data4 <- new_data4[c(-ncol(new_data4))]
+
+  games <- rbind(games, new_data4)
+  
+}
+
+#saves the new dataframe clean and organized by game
+write.table(games, 'data_esc_clean.txt', append = FALSE, quote = TRUE, sep = "\t", eol = '\n', na = 'NA', dec = '.', col.names = TRUE, row.names = FALSE)
