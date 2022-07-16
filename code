@@ -59,6 +59,8 @@ library(dendextend)
 library(ggplot2)
 
 
-dend <- games2 %>%  daisy %>% hclust %>% as.dendrogram
-dend %>% set("branches_k_color", k = 4) %>% 
-  plot()
+ddist <- daisy(games2, metric = 'gower')
+hc2<-hclust(ddist, method = "complete")
+plot(hc2,)
+rect.hclust(hc2, k = 4, border = c('blue', 'blue', 'black', 'orange'))
+
