@@ -38,3 +38,27 @@ for (game in 1:100) {
 
 #saves the new dataframe clean and organized by game
 write.table(games, 'data_esc_clean.txt', append = FALSE, quote = TRUE, sep = "\t", eol = '\n', na = 'NA', dec = '.', col.names = TRUE, row.names = FALSE)
+
+
+
+
+# selects rows and columns without missing data
+games2 <- games %>% 
+  mutate(n_corner = seq(1, nrow(games)))
+rownames(games2) <- games2$n_corner
+games2 <- games2[c(5:6, 8:10, 13:19)]
+games2 <- games2[complete.cases(games2), ]
+games2 <- games2 %>% 
+  mutate_if(is.character, factor)
+
+
+
+#cluster analysis of mixed qualitative and quantitative data
+library(cluster)
+library(dendextend)
+library(ggplot2)
+
+
+dend <- games2 %>%  daisy %>% hclust %>% as.dendrogram
+dend %>% set("branches_k_color", k = 4) %>% 
+  plot()
