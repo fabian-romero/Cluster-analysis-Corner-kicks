@@ -1,3 +1,3 @@
-# Soccer_analysis
+# Corner Kick
 
-This project is about football game analysis. This aim to analyse collective and individual behaviors during the soccer game and identify some patters that result from interactions during the game. 
+This project is about the cluster analysis of corner kicks in soccer. 
