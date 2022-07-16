@@ -1,0 +1,35 @@
+#labels every corner kick with the number of the clusters that belongs according with the cluster analysis
+
+groups <- data.frame(cutree(hc2,4))
+colnames(groups) <- 'Group'
+games3 <- cbind(groups, games2)
+
+variables <- c('Group', 'finalization form', "goal", "attack players", "defence players", "posts playres", "score", "....", "...",  "...", 
+  "ball height", "ball trajectory", "Zona finalizacao")
+
+
+library(dplyr)
+
+#creates a bar plot with the frequency of every variable
+
+
+for (i in 2:13) {
+  freq_by_group <- games3 %>% 
+    group_by(Group, !!games3[i]) %>% 
+    summarise(freq = n())
+  
+  freq_by_group$Group <- as.factor(freq_by_group$Group)
+  
+  variable <- colnames(freq_by_group[2])
+  temp_var <- variables[i]
+  
+  assign(paste0('group_', variable), ggplot(freq_by_group, aes(!!sym(sprintf('%s', variable)), freq, fill = Group, label= freq))+
+           geom_bar(stat = 'identity', position = position_dodge())+
+           labs(title = paste0('', temp_var), y = '')+
+           theme(plot.title = element_text(color="black", size=10, face="bold.italic", hjust = 0.5), 
+                 axis.text.x = element_text(size = 8, angle = 0))+
+           rremove('axis.title')+
+           geom_text(aes(label=freq), vjust=-0.2, color="black", position = position_dodge(0.9), size=2.5))
+ 
+  
+}
