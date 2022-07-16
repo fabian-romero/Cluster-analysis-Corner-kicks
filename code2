@@ -10,7 +10,7 @@ variables <- c('Group', 'finalization form', "goal", "attack players", "defence 
 
 library(dplyr)
 
-#creates a bar plot with the frequency of every variable
+#creates a bar plot with the frequency of every variable by group
 
 
 for (i in 2:13) {
